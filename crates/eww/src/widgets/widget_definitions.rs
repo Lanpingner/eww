@@ -80,6 +80,7 @@ pub const BUILTIN_WIDGET_NAMES: &[&str] = &[
     WIDGET_NAME_REVEALER,
     WIDGET_NAME_SCROLL,
     WIDGET_NAME_OVERLAY,
+    WIDGET_NAME_FLOWBOX,
 ];
 
 //// widget definitions
@@ -107,6 +108,7 @@ pub(super) fn widget_use_to_gtk_widget(bargs: &mut BuilderArgs) -> Result<gtk::W
         WIDGET_NAME_REVEALER => build_gtk_revealer(bargs)?.upcast(),
         WIDGET_NAME_SCROLL => build_gtk_scrolledwindow(bargs)?.upcast(),
         WIDGET_NAME_OVERLAY => build_gtk_overlay(bargs)?.upcast(),
+        WIDGET_NAME_FLOWBOX => build_gtk_flowbox(bargs)?.upcast(),
         _ => {
             return Err(DiagError(gen_diagnostic! {
                 msg = format!("referenced unknown widget `{}`", bargs.widget_use.name),
@@ -1040,6 +1042,17 @@ fn build_graph(bargs: &mut BuilderArgs) -> Result<super::graph::Graph> {
         prop(line_style: as_string) { w.set_property("line-style", &line_style); },
     });
     Ok(w)
+}
+
+const WIDGET_NAME_FLOWBOX: &str = "flowbox";
+/// @widget flowbox
+/// @desc A Widget that creates a FlowBox like HTML flex element
+fn build_gtk_flowbox(bargs: &mut BuilderArgs) -> Result<gtk::FlowBox> {
+    let gtk_widget = gtk::FlowBox::new();
+    def_widget!(bargs, _g, gtk_widget, {
+        prop(width: as_string) {gtk_widget.set_width(width);}
+    });
+    Ok(gtk_widget)
 }
 
 /// @var orientation - "vertical", "v", "horizontal", "h"
