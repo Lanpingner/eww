@@ -507,6 +507,7 @@ fn build_gtk_button(bargs: &mut BuilderArgs) -> Result<gtk::Button> {
                 }
                 gtk::Inhibit(false)
             }));
+            gtk_widget.add_events(gdk::EventMask::BUTTON_RELEASE_MASK);
             connect_signal_handler!(gtk_widget, gtk_widget.connect_button_release_event(move |_, evt| {
                 match evt.button() {
                     1 => run_command(timeout, &onrelease, &[] as &[&str]),
@@ -832,6 +833,7 @@ fn build_gtk_event_box(bargs: &mut BuilderArgs) -> Result<gtk::EventBox> {
                 }
                 gtk::Inhibit(false)
             }));
+            gtk_widget.add_events(gdk::EventMask::BUTTON_RELEASE_MASK);
             connect_signal_handler!(gtk_widget, gtk_widget.connect_button_release_event(move |_, evt| {
                 match evt.button() {
                     1 => run_command(timeout, &onrelease, &[] as &[&str]),
