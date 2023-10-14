@@ -489,7 +489,13 @@ fn build_gtk_button(bargs: &mut BuilderArgs) -> Result<gtk::Button> {
             // @prop onmiddleclick - a command that get's run when the button is middleclicked
             onmiddleclick: as_string = "",
             // @prop onrightclick - a command that get's run when the button is rightclicked
-            onrightclick: as_string = ""
+            onrightclick: as_string = "",
+            // @prop onrelease - a command that get's run when the button is released
+            onrelease: as_string = "",
+            // @prop onmiddleclickrelease - a command that get's run when the middle button is released
+            onmiddleclickrelease: as_string = "",
+            // @prop onrightclickrelease - a command that get's run when the right button is released
+            onrightclickrelease: as_string = ""
         ) {
             gtk_widget.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
             connect_signal_handler!(gtk_widget, gtk_widget.connect_button_press_event(move |_, evt| {
@@ -498,6 +504,15 @@ fn build_gtk_button(bargs: &mut BuilderArgs) -> Result<gtk::Button> {
                     2 => run_command(timeout, &onmiddleclick, &[] as &[&str]),
                     3 => run_command(timeout, &onrightclick, &[] as &[&str]),
                     _ => {},
+                }
+                gtk::Inhibit(false)
+            }));
+            connect_signal_handler!(gtk_widget, gtk_widget.connect_button_release_event(move |_, evt| {
+                match evt.button() {
+                    1 => run_command(timeout, &onrelease, &[] as &[&str]),
+                    2 => run_command(timeout, &onmiddleclickrelease, &[] as &[&str]),
+                    3 => run_command(timeout, &onrightclickrelease, &[] as &[&str]),
+                    _ => {}
                 }
                 gtk::Inhibit(false)
             }));
@@ -799,7 +814,13 @@ fn build_gtk_event_box(bargs: &mut BuilderArgs) -> Result<gtk::EventBox> {
             // @prop onmiddleclick - a command that get's run when the button is middleclicked
             onmiddleclick: as_string = "",
             // @prop onrightclick - a command that get's run when the button is rightclicked
-            onrightclick: as_string = ""
+            onrightclick: as_string = "",
+            // @prop onrelease - a command that get's run when the button is released
+            onrelease: as_string = "",
+            // @prop onmiddleclickrelease - a command that get's run when the middle button is released
+            onmiddleclickrelease: as_string = "",
+            // @prop onrightclickrelease - a command that get's run when the right button is released
+            onrightclickrelease: as_string = ""
         ) {
             gtk_widget.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
             connect_signal_handler!(gtk_widget, gtk_widget.connect_button_press_event(move |_, evt| {
@@ -808,6 +829,15 @@ fn build_gtk_event_box(bargs: &mut BuilderArgs) -> Result<gtk::EventBox> {
                     2 => run_command(timeout, &onmiddleclick, &[] as &[&str]),
                     3 => run_command(timeout, &onrightclick, &[] as &[&str]),
                     _ => {},
+                }
+                gtk::Inhibit(false)
+            }));
+            connect_signal_handler!(gtk_widget, gtk_widget.connect_button_release_event(move |_, evt| {
+                match evt.button() {
+                    1 => run_command(timeout, &onrelease, &[] as &[&str]),
+                    2 => run_command(timeout, &onmiddleclickrelease, &[] as &[&str]),
+                    3 => run_command(timeout, &onrightclickrelease, &[] as &[&str]),
+                    _ => {}
                 }
                 gtk::Inhibit(false)
             }));
