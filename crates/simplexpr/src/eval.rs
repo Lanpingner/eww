@@ -453,7 +453,27 @@ fn call_expr_function(name: &str, args: Vec<DynVal>) -> Result<DynVal, EvalError
             })),
             _ => Err(EvalError::WrongArgCount(name.to_string())),
         },
-
+        "lower" => match args.as_slice() {
+            [string] => {
+                let string = string.as_string()?;
+                Ok(DynVal::from(string.to_lowercase()))
+            }
+            _ => Err(EvalError::WrongArgCount(name.to_string())),
+        },
+        "upper" => match args.as_slice() {
+            [string] => {
+                let string = string.as_string()?;
+                Ok(DynVal::from(string.to_uppercase()))
+            }
+            _ => Err(EvalError::WrongArgCount(name.to_string())),
+        },
+        "strip" => match args.as_slice() {
+            [string] => {
+                let string = string.as_string()?;
+                Ok(DynVal::from(string.trim()))
+            }
+            _ => Err(EvalError::WrongArgCount(name.to_string())),
+        },
         _ => Err(EvalError::UnknownFunction(name.to_string())),
     }
 }
