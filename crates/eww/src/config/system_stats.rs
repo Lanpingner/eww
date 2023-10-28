@@ -222,3 +222,43 @@ pub fn get_ipv6() -> String {
         ifas.iter().filter(|ipv| ipv.1.is_ipv6() && ipv.0 != "lo").map(|ip| format!("{}", ip.1)).collect::<Vec<_>>().join(", ");
     joined
 }
+
+#[cfg(target_os = "linux")]
+pub fn get_backlights() -> String {
+    let dir_path = "/sys/class/backlight/";
+    let dir_entries = match std::fs::read_dir(dir_path) {
+        Ok(entries) => entries,
+        Err(err) => {
+            log::error!("Error reading directory: {:?}", err);
+            return String::from(""); // Return an empty string or some default value.
+        }
+    };
+
+    let backlight_info: Vec<String> = dir_entries
+        .filter_map(|entry| {
+            let entry = entry.ok()?;
+            let file_name = entry.file_name().to_string_lossy().to_string();
+            let brightness_path = entry.path().join("brightness");
+            let max_brightness_path = entry.path().join("max_brightness");
+            if let (Ok(brightness_str), Ok(max_brightness_str)) =
+                (std::fs::read_to_string(&brightness_path), std::fs::read_to_string(&max_brightness_path))
+            {
+                if let (Ok(brightness), Ok(max_brightness)) =
+                    (brightness_str.trim().parse::<u32>(), max_brightness_str.trim().parse::<u32>())
+                {
+                    let brightness_percent = (brightness as f32 / max_brightness as f32) * 100.0;
+                    Some(format!(
+                        r#""{}": {{ "brightness": {}, "max_brightness": {}, "percent": {} }}"#,
+                        file_name, brightness, max_brightness, brightness_percent
+                    ))
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    format!("{{ {} }}", backlight_info.join(","))
+}

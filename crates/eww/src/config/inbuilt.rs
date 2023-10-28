@@ -70,6 +70,10 @@ define_builtin_vars! {
 
     // @desc EWW_IPV6 - Information about the IPv6 address on all interfaces except "lo"
     "EWW_IPV6" [1] => || Ok(DynVal::from(get_ipv6())),
+
+    // @desc EWW_BRIGHTNESS - Information screens backlights
+    // @prop { <name_of_backlight>: { brightness, max_brightness, percent } }
+    "EWW_BRIGHTNESS" [2] => || Ok(DynVal::from(get_backlights())),
 }
 
 macro_rules! define_magic_constants {
