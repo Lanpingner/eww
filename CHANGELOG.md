@@ -20,7 +20,7 @@ All notable changes to eww will be listed here, starting at changes since versio
 - Add `EWW_IPV4`, `EWW_IPV6` magic variable (By: Lanpingner)
 - Add trigonometric functions (`sin`, `cos`, `tan`, `cot`) and degree/radian conversions (`degtorad`, `radtodeg`) (By: end-4)
 - Add `substring` function to simplexpr
-- Add `upper`,`lower`,`trim` function to simplexpr
+- Add `upper`,`lower`,`trim` function to simplexpr (By: Lanpingner)
 - Add `--duration` flag to `eww open`
 
 ## [0.4.0] (04.09.2022)
