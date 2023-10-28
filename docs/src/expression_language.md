@@ -59,3 +59,6 @@ Supported currently are the following features:
       Same as other `formattime`, but does not accept timezone. Instead, it uses system's local timezone.
       Check [chrono's documentation](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) for more
       information about format string.
+    - `lower`: Return lowercase string
+    - `upper`: Return uppercase string
+    - `trim`: Return trimmed string
